@@ -556,10 +556,11 @@ class DesignMatrix(object):
     def plot_confound_correlation(self, fname=None, legend=True, close=False):
         """Plot how correlated the condition and confound regressors are."""
         import seaborn as sns
+        condition_names = self._hires_conditions.columns
         corrs = self.design_matrix.corr()
-        corrs = corrs.loc[self._confound_names, self._condition_names]
+        corrs = corrs.loc[self._confound_names, condition_names]
 
-        n_bars = len(self._condition_names) * len(self._confound_names)
+        n_bars = len(condition_names) * len(self._confound_names)
         ysize = min(n_bars * .2, 10)
         figsize = (9, ysize)
 
@@ -574,12 +575,12 @@ class DesignMatrix(object):
 
         ax.set_xlim(0, 1)
         ax.set_xlabel("| correlation |")
-        ax.set_yticks(np.arange(len(self._condition_names)) + 0.5)
-        ax.set_yticklabels(self._condition_names)
-        ax.set_ylim(0, len(self._condition_names))
+        ax.set_yticks(np.arange(len(condition_names)) + 0.5)
+        ax.set_yticklabels(condition_names)
+        ax.set_ylim(0, len(condition_names))
         ax.yaxis.grid(False)
 
-        for y in range(1, len(self._condition_names)):
+        for y in range(1, len(condition_names)):
             ax.axhline(y, ls=":", c=".6", lw=1, zorder=0)
 
         if legend:
